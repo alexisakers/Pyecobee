@@ -12,6 +12,7 @@ import six
 from pyecobee.ecobee_object import EcobeeObject
 from pyecobee.enumerations import AckType
 from pyecobee.enumerations import FanMode
+from pyecobee.enumerations import FanSpeed
 from pyecobee.enumerations import HoldType
 from pyecobee.enumerations import PlugState
 from pyecobee.enumerations import Scope
@@ -2583,6 +2584,7 @@ class EcobeeService(EcobeeObject):
         cool_hold_temp=None,
         heat_hold_temp=None,
         fan_mode=None,
+        fan_speed=None,
         hold_climate_ref=None,
         start_date_time=None,
         end_date_time=None,
@@ -2608,6 +2610,15 @@ class EcobeeService(EcobeeObject):
         heat_hold_temp and fan mode parameters passed into this method
         separately.
 
+        The following combinations of hold climate settings are valid:
+        - cool_hold_temp and heat_hold_temp
+        - cool_hold_temp, heat_hold_temp and fan_mode,
+        - hold_climate_ref, cool_hold_temp and heat_hold_temp
+        - hold_climate_ref, cool_hold_temp, heat_hold_temp and fan_mode,
+        - fan_speed
+        - fan_speed and fan_mode
+        - fan_mode
+
         :param cool_hold_temp: The temperature in Fahrenheit to set the
         cool vacation hold at
         :param heat_hold_temp: The temperature in Fahrenheit to set the
@@ -2632,6 +2643,9 @@ class EcobeeService(EcobeeObject):
         establish a connection and to receive a response
         :return: An UpdateThermostatResponse object indicating the
         status of this request
+        :param FanSpeed: The speed of the fan. Will only have an effect if
+        the fan capabilities of the thermostat support it. Valid values:
+        FanSpeed.LOW, FanSpeed.MEDIUM, FanSpeed.HIGH and FanSpeed.OPTIMIZED.
         :rtype: EcobeeStatusResponse
         :raises EcobeeApiException: If the request results in an ecobee
         API error response
@@ -2646,8 +2660,9 @@ class EcobeeService(EcobeeObject):
         :raises ValueError: If cool_hold_temp is lower than -10F,
         cool_hold_temp is higher than 120F, heat_hold_temp is lower than
         45F, heat_hold_temp is higher than 120F, cool_hold_temp,
-        heat_hold_temp, and hold_climate_ref are None, hold_climate_ref
-        is None and either cool_hold_temp or heat_hold_temp are None,
+        heat_hold_temp, hold_climate_ref, fan_mode, and fan_speed are None,
+        hold_climate_ref is None and either cool_hold_temp or heat_hold_temp
+        are None or fan_mode is None or fan_speed is None,
         start/end date_times are earlier than 2008-01-02 00:00:00 +0000,
         start/end date_times are later than 2035-01-01 00:00:00 +0000,
         start_date_time is later than end_date_time, end_date_time is
@@ -2688,6 +2703,10 @@ class EcobeeService(EcobeeObject):
                 )
         if fan_mode is not None and not isinstance(fan_mode, FanMode):
                 raise TypeError("fan_mode must be an instance of {0}".format(FanMode))
+        
+        if fan_speed is not None and not isinstance(fan_speed, FanSpeed):
+                raise TypeError("fan_speed must be an instance of {0}".format(FanSpeed))
+
         if hold_climate_ref is not None and not isinstance(
             hold_climate_ref, six.string_types
         ):
@@ -2698,19 +2717,32 @@ class EcobeeService(EcobeeObject):
             cool_hold_temp is None
             and heat_hold_temp is None
             and hold_climate_ref is None
+            and fan_mode is None
+            and fan_speed is None
         ):
             raise ValueError(
-                'cool_hold_temp, heat_hold_temp, and hold_climate_ref must not all '
-                'be None. Either cool_hold_temp and heat_hold_temp must not be None '
-                'or hold_climate_ref must not be None'
+                'cool_hold_temp, heat_hold_temp, hold_climate_ref, fan_mode and fan_speed '
+                'must not all be None. Either cool_hold_temp and heat_hold_temp must not '
+                'be None or hold_climate_ref must not be None'
             )
+
+        # DEVAPISUPP-416: this should probably be allowed        
+        if fan_speed is not None and (
+            cool_hold_temp is not None or heat_hold_temp is not None or hold_climate_ref is not None
+        ):
+            raise ValueError(
+                'fan_speed can not be used along with the cool_hold_temp, heat_hold_temp or '
+                'hold_climate_ref parameters. fan_mode is the only parameter that can be not None '
+                'when using fan_speed.'
+            )
+
         if hold_climate_ref is None and (
-            cool_hold_temp is None or heat_hold_temp is None
+            (cool_hold_temp is None or heat_hold_temp is None) and fan_mode is None and fan_speed is None
         ):
             raise ValueError(
-                'hold_climate_ref is None. cool_hold_temp and heat_hold_temp must '
-                'not be None.'
-            )
+                'hold_climate_ref is None. cool_hold_temp and heat_hold_temp or fan_mode '
+                'or fan_speed must not be None.'
+            )        
         if start_date_time is not None:
             if not isinstance(start_date_time, datetime):
                 raise TypeError(
@@ -2788,6 +2820,9 @@ class EcobeeService(EcobeeObject):
             
         if fan_mode is not None:
             set_hold_parameters["fan"] = fan_mode.value
+
+        if fan_speed is not None:
+            set_hold_parameters["fanSpeed"] = fan_speed.value
 
         if hold_climate_ref is not None:
             set_hold_parameters['holdClimateRef'] = hold_climate_ref
