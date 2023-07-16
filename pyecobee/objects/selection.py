@@ -49,6 +49,7 @@ class Selection(EcobeeObject):
         '_include_sensors',
         '_include_audio',
         '_include_energy',
+        '_include_capabilities',
     ]
 
     attribute_name_map = {
@@ -104,6 +105,8 @@ class Selection(EcobeeObject):
         'includeAudio': 'include_audio',
         'include_energy': 'includeEnergy',
         'includeEnergy': 'include_energy',
+        'includeCapabilities': 'include_capabilities',
+        'include_capabilities': 'includeCapabilities',
     }
 
     attribute_type_map = {
@@ -133,6 +136,7 @@ class Selection(EcobeeObject):
         'include_sensors': 'boolean',
         'include_audio': 'boolean',
         'include_energy': 'boolean',
+        'include_capabilities': 'boolean',
     }
 
     def __init__(
@@ -163,6 +167,7 @@ class Selection(EcobeeObject):
         include_sensors=None,
         include_audio=None,
         include_energy=None,
+        include_capabilities=None,
     ):
         """
         Construct a Selection instance
@@ -193,6 +198,7 @@ class Selection(EcobeeObject):
         self._include_sensors = include_sensors
         self._include_audio = include_audio
         self._include_energy = include_energy
+        self._include_capabilities = include_capabilities
 
     @property
     def selection_type(self):
@@ -840,3 +846,26 @@ class Selection(EcobeeObject):
         """
 
         self._include_energy = include_energy
+
+    @property
+    def include_capabilities(self):
+        """
+        Gets the include_capabilities attribute of this Selection instance.
+
+        :return: The value of the include_capabilities attribute of this
+        Selection instance.
+        :rtype: boolean
+        """
+        return self._include_capabilities
+    
+    @include_capabilities.setter
+    def include_capabilities(self, include_capabilities):
+        """
+        Sets the include_capabilities attribute of this Selection instance.
+
+        :param include_capabilities: The include_capabilities value to set for the
+        include_capabilities attribute of this Selection instance.
+        :type: boolean
+        """
+
+        self._include_capabilities = include_capabilities

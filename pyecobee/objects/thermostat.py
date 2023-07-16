@@ -35,6 +35,7 @@ class Thermostat(EcobeeObject):
         '_utc_time',
         '_audio',
         '_alerts',
+        '_capabilities',
         '_reminders',
         '_settings',
         '_runtime',
@@ -79,6 +80,7 @@ class Thermostat(EcobeeObject):
         'utcTime': 'utc_time',
         'audio': 'audio',
         'alerts': 'alerts',
+        'capabilities': 'capabilities',
         'reminders': 'reminders',
         'settings': 'settings',
         'runtime': 'runtime',
@@ -119,6 +121,7 @@ class Thermostat(EcobeeObject):
         'is_registered': 'bool',
         'model_number': 'six.text_type',
         'brand': 'six.text_type',
+        'capabilities': 'Capabilities',
         'features': 'six.text_type',
         'last_modified': 'six.text_type',
         'thermostat_time': 'six.text_type',
@@ -164,6 +167,7 @@ class Thermostat(EcobeeObject):
         utc_time=None,
         audio=None,
         alerts=None,
+        capabilities=None,
         reminders=None,
         settings=None,
         runtime=None,
@@ -203,6 +207,7 @@ class Thermostat(EcobeeObject):
         self._utc_time = utc_time
         self._audio = audio
         self._alerts = alerts
+        self._capabilities = capabilities
         self._reminders = reminders
         self._settings = settings
         self._runtime = runtime
@@ -394,6 +399,17 @@ class Thermostat(EcobeeObject):
         """
 
         return self._alerts
+
+    @property
+    def capabilities(self):
+        """
+        Gets the capabilities attribute of this Thermostat instance.
+
+        :return: The value of the capabilities attribute of this Thermostat
+        instance.
+        :rtype: Capabilities
+        """
+        return self._capabilities
 
     @property
     def reminders(self):

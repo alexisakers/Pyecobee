@@ -86,6 +86,13 @@ class FanMode(Enum):
     ON = 'on'
 
 
+class FanSpeed(Enum):
+    LOW = 'low'
+    MEDIUM = 'medium'
+    HIGH = 'high'
+    OPTIMIZED = 'optimized'
+
+
 class HoldType(Enum):
     HOLD_HOURS = 'holdHours'
     INDEFINITE = 'indefinite'

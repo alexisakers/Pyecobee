@@ -9,6 +9,7 @@ from pyecobee.enumerations import EquipmentStatus
 from pyecobee.enumerations import EventType
 from pyecobee.enumerations import ExtendedHvacMode
 from pyecobee.enumerations import FanMode
+from pyecobee.enumerations import FanSpeed
 from pyecobee.enumerations import HoldType
 from pyecobee.enumerations import HouseStyle
 from pyecobee.enumerations import HumidifierMode
@@ -37,6 +38,7 @@ from pyecobee.objects.audio import Audio
 from pyecobee.objects.climate import Climate
 from pyecobee.objects.demand_management import DemandManagement
 from pyecobee.objects.demand_response import DemandResponse
+from pyecobee.objects.capabilities import Capabilities
 from pyecobee.objects.device import Device
 from pyecobee.objects.electricity import Electricity
 from pyecobee.objects.electricity_device import ElectricityDevice
@@ -45,6 +47,7 @@ from pyecobee.objects.energy import Energy
 from pyecobee.objects.equipment_setting import EquipmentSetting
 from pyecobee.objects.event import Event
 from pyecobee.objects.extended_runtime import ExtendedRuntime
+from pyecobee.objects.fan_capabilities import FanCapabilities
 from pyecobee.objects.function import Function
 from pyecobee.objects.general_setting import GeneralSetting
 from pyecobee.objects.group import Group

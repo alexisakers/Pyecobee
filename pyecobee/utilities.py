@@ -19,6 +19,7 @@ from pyecobee.exceptions import EcobeeRequestsException
 from pyecobee.objects.action import Action
 from pyecobee.objects.alert import Alert
 from pyecobee.objects.audio import Audio
+from pyecobee.objects.capabilities import Capabilities
 from pyecobee.objects.climate import Climate
 from pyecobee.objects.demand_management import DemandManagement
 from pyecobee.objects.demand_response import DemandResponse
@@ -30,6 +31,7 @@ from pyecobee.objects.energy import Energy
 from pyecobee.objects.equipment_setting import EquipmentSetting
 from pyecobee.objects.event import Event
 from pyecobee.objects.extended_runtime import ExtendedRuntime
+from pyecobee.objects.fan_capabilities import FanCapabilities
 from pyecobee.objects.function import Function
 from pyecobee.objects.general_setting import GeneralSetting
 from pyecobee.objects.group import Group
